@@ -1,0 +1,55 @@
+version: 2.1
+
+parameters:
+  run_api:
+    type: boolean
+    default: false
+  run_unit:
+    type: boolean
+    default: false
+  run_integration:
+    type: boolean
+    default: false
+
+jobs:
+  build:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run: echo "Hello World from build job!"
+  api:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run: echo "Hello World from api job"
+      
+  unit-test:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run: echo "Hello World from unit-test job"
+
+  integration-test:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run: echo "Hello World from integration test job"
+      
+workflows:
+  api:
+    when: << pipeline.parameters.run_api >>
+    jobs:
+      - api
+      - build
+  unit-tests:
+    when: << pipeline.parameters.run_unit >>
+    jobs:
+      - unit-test
+  integration-tests:
+    when: << pipeline.parameters.run_integration >>
+    jobs:
+      - integration-test

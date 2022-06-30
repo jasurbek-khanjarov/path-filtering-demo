@@ -1,0 +1,15 @@
+version: 2.1
+
+setup: true
+
+orbs:
+  path-filtering: circleci/path-filtering@0.1.3
+workflows:
+  generate-config:
+    jobs:
+      - path-filtering/filter:
+          config-path: .circleci/continue-config.yml
+          mapping: |
+            api/.* run_api true
+            unit/.* run_unit true
+            integration/.* run_integration true
